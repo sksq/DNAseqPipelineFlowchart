@@ -21,3 +21,4 @@ $ pip install graphviz
 ```
 $ python flowchartCreator.py
 ```
+The final flowchart will be stored in output directory as DNAseqPipeline.pdf.
