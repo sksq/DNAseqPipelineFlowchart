@@ -4,21 +4,27 @@
 
 ## Installation
 
-1. Install **graphviz**
+1. Clone this repository using this command:
 
-```
-$ [sudo] apt-get install graphviz libgraphviz-dev pkg-config
-```
+  ```
+  $ git clone https://github.com/sksq/DNAseqPipelineFlowchart
+  ```
 
-2. Install python wrapper of graphviz
+2. Install `graphviz`:
 
-```
-$ [sudo] pip install graphviz
-```
+  ```
+  $ [sudo] apt-get install graphviz libgraphviz-dev pkg-config
+  ```
 
-3. Finally run the application
+3. Install python wrapper of graphviz:
 
-```
-$ python flowchartCreator.py
-```
+  ```
+  $ [sudo] pip install graphviz
+  ```
+
+4. Finally run the application:
+
+  ```
+  $ python flowchartCreator.py
+  ```
 The final flowchart will be stored in output directory as DNAseqPipeline.pdf.
