@@ -1,0 +1,42 @@
+digraph {
+	Start [label=Start color="#BDC3C7" shape=oval style=filled]
+	"1.condition" [label="FASTQ in readset?" color="#0F6177" shape=diamond]
+	"1.FASTQ" [label=FASTQ color="#7D1424" shape=box]
+	"1.generate_fastq" [label="Generate FASTQ from SAM/BAM files" color="#7D1424" shape=box]
+		Start -> "1.condition"
+		"1.condition" -> "1.FASTQ" [label=Yes]
+		"1.condition" -> "1.generate_fastq" [label=No]
+		"1.generate_fastq" -> "1.FASTQ"
+	"2.condition" [label="FASTA file specified in config file?" color="#0F6177" shape=diamond]
+	"2.FASTA" [label=FASTA color="#7D1424" shape=box]
+	"2.A1_A2" [label="Adapter1 and Adapter2 from readset file" color="#7D1424" shape=box]
+	"2.Trimmomatic" [label=Trimmomatic color="#6F2480" shape=parallelogram]
+		"1.FASTQ" -> "2.Trimmomatic"
+		"2.condition" -> "2.FASTA" [label=Yes]
+		"2.condition" -> "2.A1_A2" [label=No]
+		"2.A1_A2" -> "2.FASTA" [label="Create an adapter"]
+		"2.FASTA" -> "2.Trimmomatic" [label=Trimming]
+	"2.condition_2" [label="PAIRED_END or SINGLE_END adapters?" color="#0F6177" shape=diamond]
+	"2.AdaptersReversed" [label="Adapters reversed-complemented & swapped" color="#7D1424" shape=box]
+	"2.Adapter1" [label="Use Adapter1" color="#7D1424" shape=box]
+		"2.condition_2" -> "2.AdaptersReversed" [label=PAIRED_END]
+		"2.condition_2" -> "2.Adapter1" [label=SINGLE_END]
+		"2.AdaptersReversed" -> "2.Trimmomatic"
+		"2.Adapter1" -> "2.Trimmomatic"
+	"3.TrimmedFASTQ" [label="Trimmed FASTQ" color="#7D1424" shape=box]
+		"2.Trimmomatic" -> "3.TrimmedFASTQ" [label=""]
+	"4.Genome" [label="Aligned to reference genome" color="#6F2480" shape=parallelogram]
+	"4.BAM" [label="BAM files" color="#7D1424" shape=box]
+	"4.Sorted" [label="Sorted by coordinate" color="#6F2480" shape=parallelogram]
+	"4.SortedBAM" [label="Aligned and sorted BAM files" color="#7D1424" shape=box]
+		"3.TrimmedFASTQ" -> "4.Genome" [label=""]
+		"4.Genome" -> "4.BAM" [label="Software: BWA, Algorithm: bwa mem"]
+		"4.BAM" -> "4.Sorted" [label=""]
+		"4.Sorted" -> "4.SortedBAM" [label="Using Picard"]
+	"5.Merged" [label="Merged into one file per sample" color="#6F2480" shape=parallelogram]
+	"5.MergedBAM" [label="Merged BAM files" color="#7D1424" shape=box]
+	End [label=End color="#BDC3C7" shape=oval style=filled]
+		"4.SortedBAM" -> "5.Merged"
+		"5.Merged" -> "5.MergedBAM" [label="Using Picard"]
+		"5.MergedBAM" -> End
+}
