@@ -13,7 +13,7 @@ $ [sudo] apt-get install graphviz libgraphviz-dev pkg-config
 2. Install python wrapper of graphviz
 
 ```
-$ pip install graphviz
+$ [sudo] pip install graphviz
 ```
 
 3. Finally run the application
